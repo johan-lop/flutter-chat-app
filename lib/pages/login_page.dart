@@ -1,9 +1,12 @@
+import 'package:chat_app/helpers/mostrar_alerta.dart';
+import 'package:chat_app/services/auth_service.dart';
 import 'package:chat_app/widgets/custom_button.dart';
 import 'package:chat_app/widgets/custom_input.dart';
 import 'package:chat_app/widgets/labels.dart';
 import 'package:chat_app/widgets/logo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -49,6 +52,8 @@ class _FormState extends State<_Form> {
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context, listen: false);
+
     return Container(
       margin: EdgeInsets.only(top: 40),
       padding: EdgeInsets.symmetric(horizontal: 50),
@@ -67,11 +72,21 @@ class _FormState extends State<_Form> {
             textController: passController,
           ),
           CustomButton(
-              text: 'Ingresar',
-              onPressed: () {
-                print(emailController.text);
-                print(passController.text);
-              })
+              text: (authService.loading) ? 'Cargando' : 'Ingresar',
+              onPressed: (authService.loading)
+                  ? () => null
+                  : () async {
+                      FocusScope.of(context).unfocus();
+                      bool exitoso = await authService.login(
+                          emailController.text.trim(),
+                          passController.text.trim());
+                      if (exitoso) {
+                        Navigator.pushReplacementNamed(context, 'usuarios');
+                      } else {
+                        mostrarAlerta(context, 'Login Incorrecto',
+                            'Clave o usuario incorrecto');
+                      }
+                    })
         ],
       ),
     );
