@@ -12,7 +12,7 @@ class LoginResponse {
       {this.ok = false, this.usuario, this.token = '', this.msg = ''});
 
   bool ok;
-  Usuario? usuario;
+  Usuario usuario;
   String token;
   String msg;
 

@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
 class Logo extends StatelessWidget {
-
   final String titulo;
 
-  const Logo({Key? key, required this.titulo}) : super(key: key);
+  const Logo({Key key, this.titulo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

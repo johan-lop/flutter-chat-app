@@ -10,7 +10,7 @@ import 'package:chat_app/models/usuario.dart';
 
 class AuthService with ChangeNotifier {
   
-  Usuario? usuario;
+  Usuario usuario;
   bool _loading = false;
 
   final _storage = new FlutterSecureStorage();
@@ -45,10 +45,10 @@ class AuthService with ChangeNotifier {
     this.loading = false;
 
     if (resp.statusCode == 200) {
-      print(resp.body);
       final loginResponse = LoginResponse.fromJson(json.decode(resp.body));
       usuario = loginResponse.usuario;
       await this._guardarToken(loginResponse.token);
+      notifyListeners();
       return true;
     } else {
       return false;
@@ -77,7 +77,6 @@ class AuthService with ChangeNotifier {
 
   Future<bool> isLoggedIn() async {
     final token = await this._storage.read(key: 'token');
-    print(token);
     if (token == null) {
       return false;
     }

@@ -7,10 +7,10 @@ class Labels extends StatelessWidget {
   final String textoLink;
 
   const Labels(
-      {Key? key,
-      required this.ruta,
-      required this.pregunta,
-      required this.textoLink})
+      {Key key,
+      this.ruta,
+      this.pregunta,
+      this.textoLink})
       : super(key: key);
 
   @override
